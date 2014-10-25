@@ -11,6 +11,6 @@ def fftBins(signal):
 
 
 def timeFreq(X):
-   X = X #padd with zeros to have shapes match up 
+   X = np.concatenate((X, np.zeros((-X.size) % WINDOW_LENGTH))) #padd with zeros to have shapes match up 
    Y = np.reshape(X, newshape=(-1,WINDOW_LENGTH))
    return(fftBins(Y))
