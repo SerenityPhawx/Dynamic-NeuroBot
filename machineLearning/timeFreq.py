@@ -7,7 +7,7 @@ WINDOW_LENGTH=64
 
 def fftBins(signal):
    ft = np.fft.rfft(signal * np.hamming(signal.shape[1]))
-   return(ft)
+   return(np.abs(ft))
 
 
 def timeFreq(signal):
