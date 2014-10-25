@@ -1,17 +1,20 @@
 import scipy
 import numpy as np
 
-SAMPLING_RATE = 250
-WINDOW_LENGTH=64
+WINDOW_LENGTH=500
 LIMIT = 400
+SAMPLING_RATE=500
+d = 1/SAMPLING_RATE
+FREQ_CUTOFF_INDEX = 25 # Decide on that using np.fft.rfftfreq(WINDOW_LENGTH, d)
+
 
 def clipping(signal):
    clip = np.abs(signal) > LIMIT
-   return(signal * logical_not(clip) + LIMIT * clip * np.sign(signal))
+   return(signal * np.logical_not(clip) + LIMIT * clip * np.sign(signal))
 
 def fftBins(signal):
    signal = clipping(signal)
-   ft = np.fft.rfft(signal * np.hamming(signal.shape[1])) 
+   ft = np.fft.rfft(signal * np.hamming(signal.shape[1]))[:,:FREQ_CUTOFF_INDEX]
    return(np.abs(ft))
 
 def timeFreq(signal):
