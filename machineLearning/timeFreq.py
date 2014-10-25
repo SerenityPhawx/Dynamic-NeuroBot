@@ -3,12 +3,16 @@ import numpy as np
 
 SAMPLING_RATE = 250
 WINDOW_LENGTH=64
+LIMIT = 400
 
+def clipping(signal):
+   clip = np.abs(signal) > LIMIT
+   return(signal * logical_not(clip) + LIMIT * clip * np.sign(signal))
 
 def fftBins(signal):
+   signal = clipping(signal)
    ft = np.fft.rfft(signal * np.hamming(signal.shape[1])) 
    return(np.abs(ft))
-
 
 def timeFreq(signal):
    signal = np.concatenate((signal, np.zeros((-signal.size) % WINDOW_LENGTH))) #padd with zeros to have shapes match up 
