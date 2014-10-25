@@ -8,6 +8,7 @@ import features
 import numpy as np
 import pickle
 
+
 """
 A class to make it simple to collect tagged csv data from the OpenBCI board.
 It will keep track of data and store it in a csv file.
