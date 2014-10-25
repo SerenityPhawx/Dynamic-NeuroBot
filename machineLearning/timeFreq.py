@@ -6,7 +6,7 @@ WINDOW_LENGTH=64
 
 
 def fftBins(signal):
-   ft = np.fft.rfft(signal * np.hamming(signal.shape[1]))
+   ft = np.fft.rfft(signal * np.hamming(signal.shape[1])) 
    return(np.abs(ft))
 
 
