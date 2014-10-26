@@ -23,7 +23,33 @@ svg {
 <body>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<script src="wad-min.js"></script>
 <script>
+
+
+// audio stuff
+var piano = new Wad({
+    source : 'square', 
+    env : {
+        attack : .01, 
+        decay : .005, 
+        sustain : .2, 
+        hold : .015, 
+        release : .3
+    }, 
+    filter : {
+        type : 'lowpass', 
+        frequency : 1200, 
+        q : 8.5, 
+        env : {
+            attack : .2, 
+            frequency : 600
+        }
+    }
+})
+
 
 // Based on work at http://bost.ocks.org/mike/path/
 
@@ -102,21 +128,34 @@ var process = 1;
 var socket = new WebSocket('ws://10.1.141.234:1234');
 socket.onmessage = function(event){
   process++;
-  if(!(process % 100 == 0)) return; 
+  if(!(process % 40 == 0)) return; 
   var data = JSON.parse(event.data);
   console.log(data);
 
 
-
-
-
-
   if (process % 3 == 0) {
     for (var i = 0; i < 8; i++) { //kann weg
+      
+      var value = parseInt(data.value)
+
       if (data.index  == 3)
-        waves[0].sample(parseInt(data.value));
+        {
+          waves[0].sample(value);
+
+          //if (value > 400)
+          //{
+          piano.play({ pitch : value+1000 })
+          //}
+      }
       else
-        waves[1].sample(parseInt(data.value));
+      {
+        waves[1].sample(value);
+          piano.play({ pitch : value })
+      }
+
+
+
+
     }
     process = 1;
   }
@@ -124,4 +163,13 @@ socket.onmessage = function(event){
 
   
 };
+
+
+
+
+
+
+
+
+
 </script>
