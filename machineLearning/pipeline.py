@@ -1,3 +1,4 @@
+# Use this file if working with 1 Sensor
 #!/usr/bin/env python
 from readData import *
 from timeFreq import *
@@ -6,7 +7,7 @@ import numpy as np
 import sklearn
 from sklearn import svm
 
-INPUT_FILE = "raw_dat.01_02_29.csv"
+INPUT_FILE = "raw_dat.02_27_47.csv"
 sensor1ID = 2
 
 

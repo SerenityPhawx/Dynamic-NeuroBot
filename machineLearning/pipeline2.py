@@ -7,8 +7,8 @@ import numpy as np
 import sklearn
 from sklearn import svm
 
-INPUT_FILE = "raw_dat.02_27_47.csv"
-sensor1ID = 2
+INPUT_FILE = "raw_dat.12_10_42.csv"
+sensor1ID = 3
 sensor2ID = 4
 
 
@@ -40,12 +40,27 @@ perm = np.random.permutation(X.shape[0])
 X = X[perm]
 labels = labels[perm]
 
-nTrain = int(X.shape[0])
+nTrain = int(X.shape[0] * 3/8.)
 trainX = X[:nTrain]
 trainLabels = labels[:nTrain]
 
 testX = X[nTrain+1:]
 testLabels = labels[nTrain+1:]
 
-svc = svm.SVC()
+
+C = 1000
+svc = svm.SVC(C=C)
 svc.fit(trainX, trainLabels)
+
+def tryParam(C, Gamma):
+   svc = svm.SVC(C=C, gamma=Gamma)
+   svc.fit(trainX, trainLabels)
+   errTrain = np.sum(np.abs(svc.predict(trainX) - trainLabels)) / trainLabels.size
+   errTest = np.sum(np.abs(svc.predict(testX) - testLabels)) / testLabels.size
+   return((errTrain, errTest))
+
+def tryParams():
+   Pens = [1,10,100,500,1000,10000]
+   Gammas = [0.01,0.1,1,10,100]
+   return([(P, Gamma, tryParam(P, Gamma)) for P in Pens for Gamma in Gammas])
+
