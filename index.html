@@ -51,6 +51,55 @@ var piano = new Wad({
 })
 
 
+var saw = new Wad({
+    source  : 'sawtooth',
+    volume  : 1.0,   // Peak volume can range from 0 to an arbitrarily high number, but you probably shouldn't set it higher than 1.
+    loop    : false, // If true, the audio will loop. This parameter only works for audio clips, and does nothing for oscillators. 
+    pitch   : 'A4',  // Set a default pitch on the constuctor if you don't want to set the pitch on play().
+    detune  : 0,     // Set a default detune on the constructor if you don't want to set detune on play(). Detune is measured in cents. 100 cents is equal to 1 semitone.
+    panning : -5,    // Horizontal placement of the sound source. Sensible values are from 10 to -10.
+    env     : {      // This is the ADSR envelope.
+        attack  : 0.0,  // Time in seconds from onset to peak volume.  Common values for oscillators may range from 0.05 to 0.3.
+        decay   : 0.0,  // Time in seconds from peak volume to sustain volume.
+        sustain : 1.0,  // Sustain volume level. This is a percent of the peak volume, so sensible values are between 0 and 1.
+        hold    : 3.14, // Time in seconds to maintain the sustain volume level. If this is not set to a lower value, oscillators must be manually stopped by calling their stop() method.
+        release : 0     // Time in seconds from the end of the hold period to zero volume, or from calling stop() to zero volume.
+    },
+    filter  : {
+        type      : 'lowpass', // What type of filter is applied.
+        frequency : 600,       // The frequency, in hertz, to which the filter is applied.
+        q         : 1,         // Q-factor.  No one knows what this does. The default value is 1. Sensible values are from 0 to 10.
+        env       : {          // Filter envelope.
+            frequency : 800, // If this is set, filter frequency will slide from filter.frequency to filter.env.frequency when a note is triggered.
+            attack    : 0.5  // Time in seconds for the filter frequency to slide from filter.frequency to filter.env.frequency
+        }
+    },
+    reverb  : {
+        wet     : 1,                                            // Volume of the reverberations.
+        impulse : 'http://www.myServer.com/path/to/impulse.wav' // A URL for an impulse response file, if you do not want to use the default impulse response.
+    },
+    delay   : {
+        delayTime : .5,  // Time in seconds between each delayed playback.
+        wet       : .25, // Relative volume change between the original sound and the first delayed playback.
+        feedback  : .25, // Relative volume change between each delayed playback and the next. 
+    },
+    vibrato : { // A vibrating pitch effect.  Only works for oscillators.
+        shape     : 'sine', // shape of the lfo waveform. Possible values are 'sine', 'sawtooth', 'square', and 'triangle'.
+        magnitude : 3,      // how much the pitch changes. Sensible values are from 1 to 10.
+        speed     : 4,      // How quickly the pitch changes, in cycles per second.  Sensible values are from 0.1 to 10.
+        attack    : 0       // Time in seconds for the vibrato effect to reach peak magnitude.
+    },
+    tremolo : { // A vibrating volume effect.
+        shape     : 'sine', // shape of the lfo waveform. Possible values are 'sine', 'sawtooth', 'square', and 'triangle'.
+        magnitude : 3,      // how much the volume changes. Sensible values are from 1 to 10.
+        speed     : 4,      // How quickly the volume changes, in cycles per second.  Sensible values are from 0.1 to 10.
+        attack    : 0       // Time in seconds for the tremolo effect to reach peak magnitude.
+    }
+})
+
+
+
+
 // Based on work at http://bost.ocks.org/mike/path/
 
 function Wave() {
@@ -138,13 +187,37 @@ socket.onmessage = function(event){
       
       var value = parseInt(data.value)
 
+
+
+
+      // round to 
+// var arr = [16.352, 17.324, 18.354, 19.445, 20.602, 21.827, 32.703, 34.648,  36.708,  38.891,  41.203,  43.654, 65.406,  69.296,  73.416,  77.782,  82.407,  87.307, 130.813,  138.591,  146.832,  155.563,  164.814,  174.614, 261.626,  277.183,  293.665,  311.127,  329.628,  349.228, 523.251,  554.365,  587.330,  622.254,  659.255,  698.456, 1046.502,  1108.730,  1174.659,  1244.508,  1318.510,  1396.913, 2093.004,  2217.461,  2349.318,  2489.016,  2637.020,  2793.826, 4186.009,  4434.922,  4698.636,  4978.032,  5274.041,  5587.652, 8372.018,  8869.844,  9397.272,  9956.063,  10548.082,  11175.303, 16744.035,  17739.688,  18794.544,  19912.126,  21096.163,  22350.606, 23.125,  24.500,  25.957,  27.500,  29.135,  30.868, 46.249,  48.999,  51.913,  55.000,  58.270,  61.735, 92.499,  97.999,  103.826,  110.000,  116.541,  123.471, 184.997,  195.998,  207.652,  220.000,  233.082,  246.942, 369.994,  391.995,  415.305,  440.000,  466.164,  493.883, 739.989,  783.991,  830.609,  880.000,  932.328,  987.767, 1479.978,  1567.982,  1661.219,  1760.000,  1864.655,  1975.533, 2959.955,  3135.963,  3322.438,  3520.000,  3729.310,  3951.066, 5919.911,  6271.927,  6644.875, 7040.000,  7458.620,  7902.133, 11839.821,  12543.854,  13289.750,  14080.000,  14917.240,  15804.266];
+
+//       var d = Math.abs(value - arr[0]);
+//       var smallestDistTone = arr[0];
+//       for (var i = 1; i <  arr.length ; i++)
+//       {
+//           if (Math.abs(value - arr[i]) < d)
+//           {
+
+//             d = Math.abs(value - arr[i]);
+//             smallestDistTone = arr[i];
+//           }
+//           else
+//             break;
+//       }
+
+//       console.log(smallestDistTone);
+//       value = smallestDistTone;
+
+      // acording to sensor do high or bass
       if (data.index  == 3)
         {
           waves[0].sample(value);
 
           //if (value > 400)
           //{
-          piano.play({ pitch : value+1000 })
+          //piano.play({ pitch : value+1000 })
           //}
       }
       else
