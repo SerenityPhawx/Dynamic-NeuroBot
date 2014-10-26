@@ -1,19 +1,31 @@
+
+from readData2 import *
+
+import scipy
+
 import numpy
 import pylab
 
+INPUT_FILE = "raw_dat.02_27_47.csv"
+sensor1ID = 2
+sensor2ID = 4
 
-def readInput(filename, sensor1ID = 1, sensor2ID = 2):
-	XInput = np.genfromtxt(filename,delimiter=',')
+filename = INPUT_FILE
+X1, X2 = readInput(filename, sensor1ID, sensor2ID)
 
-	X1 = XInput[np.where(XInput[:,0] == sensor1ID)[0]]
-	#X2 = XInput[np.where(XInput[:,0] == sensor2ID)[0]]
-	
-	X2 = X1   #for when there is only one channel
-	
-	N = np.min((X1.shape[0], X2.shape[0]))
-	X1 = X1[:N-1,:]
-	X2 = X2[:N-1,:]
-	return((X1, X2))
+#readData2
+#def readInput(filename, sensor1ID = 1, sensor2ID = 2):
+#	XInput = np.genfromtxt(filename,delimiter=',')
+#
+#	X1 = XInput[np.where(XInput[:,0] == sensor1ID)[0]]
+#	#X2 = XInput[np.where(XInput[:,0] == sensor2ID)[0]]
+#	
+#	X2 = X1   #for when there is only one channel
+#	
+#	N = np.min((X1.shape[0], X2.shape[0]))
+#	X1 = X1[:N-1,:]
+#	X2 = X2[:N-1,:]
+#	return((X1, X2))
 
 #Find Tau (time delay variable)
 tau_max = 100
