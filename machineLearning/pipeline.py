@@ -6,8 +6,8 @@ import numpy as np
 import sklearn
 from sklearn import svm
 
-INPUT_FILE = "raw_dat.01_05_11.csv"
-sensor1ID = 2
+INPUT_FILE = "raw_dat.01_26_05.csv"
+sensor1ID = 4
 
 
 filename = INPUT_FILE
@@ -38,7 +38,7 @@ perm = np.random.permutation(X.shape[0])
 X = X[perm]
 labels = labels[perm]
 
-nTrain = int(X.shape[0] / 2)
+nTrain = int(X.shape[0])
 trainX = X[:nTrain]
 trainLabels = labels[:nTrain]
 

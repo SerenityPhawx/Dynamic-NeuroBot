@@ -2,7 +2,7 @@ import scipy
 import numpy as np
 
 WINDOW_LENGTH=500
-LIMIT = 400
+LIMIT = 500
 SAMPLING_RATE=500
 d = 1/SAMPLING_RATE
 FREQ_CUTOFF_INDEX = 25 # Decide on that using np.fft.rfftfreq(WINDOW_LENGTH, d)
