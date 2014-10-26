@@ -6,8 +6,8 @@ import numpy as np
 import sklearn
 from sklearn import svm
 
-INPUT_FILE = "raw_dat.01_26_05.csv"
-sensor1ID = 4
+INPUT_FILE = "raw_dat.01_02_29.csv"
+sensor1ID = 2
 
 
 filename = INPUT_FILE
