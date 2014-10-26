@@ -40,14 +40,14 @@ def doAttractor(data):
 
 	for tau in range(1, tau_max):
 		non_delayed = data[:-tau]
-		delayed = numpy.roll(data, -tau)[:-tau]   #roll funct performs delay by shifting all values to the left by tau
-		joint = numpy.hstack((non_delayed, delayed))   #series must be shortened by tau values, if data series is a fixed length with no further values to shift in
-		minf.append(mutual_info(joint, normalized=True))
+		delayed = np.roll(data, -tau)[:-tau]   #roll funct performs delay by shifting all values to the left by tau
+		joint = np.hstack((non_delayed, delayed))   #series must be shortened by tau values, if data series is a fixed length with no further values to shift in
+		minf.append(sklearn.metrics.normalized_mutual_info_score(non_delayed, delayed))
 		
 	#Return 1st local min of mutual info
 		if len(minf) > 1 and minf[-2] < minf[-1]:   #if current mutual info value > previous one
 			tau -= 100
-			print tau, minf
+			print(tau, minf)
 			break
 	return data
 
@@ -60,8 +60,8 @@ datasvm  = getPredictions(X1, X2)
 figure = pylab.figure()
 axes = Axes3D(figure)
 data_lag0 = dataattr[:-2].flatten()
-data_lag1 = numpy.roll(dataattr, -tau)[:-2].flatten()
-data_lag2 = numpy.roll(dataattr, -2*tau)[:-2].flatten()
+data_lag1 = np.roll(dataattr, -tau)[:-2].flatten()
+data_lag2 = np.roll(dataattr, -2*tau)[:-2].flatten()
 
 axes.plot3D(data_lag0, data_lag1, data_lag2)
 figure.add_axes(axes)
