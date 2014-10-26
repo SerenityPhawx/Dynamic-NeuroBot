@@ -1,0 +1,49 @@
+import numpy
+import pylab
+
+
+def readInput(filename, sensor1ID = 1, sensor2ID = 2):
+	XInput = np.genfromtxt(filename,delimiter=',')
+
+	X1 = XInput[np.where(XInput[:,0] == sensor1ID)[0]]
+	#X2 = XInput[np.where(XInput[:,0] == sensor2ID)[0]]
+	
+	X2 = X1   #for when there is only one channel
+	
+	N = np.min((X1.shape[0], X2.shape[0]))
+	X1 = X1[:N-1,:]
+	X2 = X2[:N-1,:]
+	return((X1, X2))
+
+#Find Tau (time delay variable)
+tau_max = 100
+minf = []     #mutual information between delayed and nondelayed series
+
+#Measure mutual info up to a max value
+
+for tau in range(1, tau_max):
+	non_delayed = data[:-tau]
+	delayed = numpy.roll(data, -tau)[:-tau]   #roll funct performs delay by shifting all values to the left by tau
+	joint = numpy.hstack((non_delayed, delayed))   #series must be shortened by tau values, if data series is a fixed length with no further values to shift in
+	minf.append(mutual_info(joint, normalized=True))
+	
+#Return 1st local min of mutual info
+	if len(minf) > 1 and minf[-2] < minf[-1]:   #if current mutual info value > previous one
+		tau -= 100
+		print tau, minf
+		break
+
+		
+#Plot time-delayed embedding in 3 Dimensions using tau
+
+figure = pylab.figure()
+axes = Axes3D(figure)
+data_lag0 = data[:-2].flatten()
+data_lag1 = numpy.roll(data, -tau)[:-2].flatten()
+data_lag2 = numpy.roll(data, -2*tau)[:-2].flatten()
+
+axes.plot3D(data_lag0, data_lag1, data_lag2)
+figure.add_axes(axes)
+
+pylab.show()
+
